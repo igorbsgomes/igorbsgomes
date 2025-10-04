@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% block title %}Precificação | Gestão de Velas{% endblock %}
+{% block content %}
+<h1 class="mb-4">Sessão 1: Precificação</h1>
+<div class="row">
+  <div class="col-lg-6">
+    <div class="form-section">
+      <h5>Custos Fixos Mensais</h5>
+      <form method="post">
+        <input type="hidden" name="form_name" value="fixed_costs">
+        <div class="row g-2">
+          <div class="col-sm-6">
+            <label class="form-label">Domínio</label>
+            <input type="number" step="0.01" class="form-control" name="domain" value="{{ fixed.domain or 0 }}">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Hospedagem</label>
+            <input type="number" step="0.01" class="form-control" name="hosting" value="{{ fixed.hosting or 0 }}">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Pró-labore</label>
+            <input type="number" step="0.01" class="form-control" name="pro_labore" value="{{ fixed.pro_labore or 0 }}">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Tráfego pago</label>
+            <input type="number" step="0.01" class="form-control" name="paid_traffic" value="{{ fixed.paid_traffic or 0 }}">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Contabilidade</label>
+            <input type="number" step="0.01" class="form-control" name="accounting" value="{{ fixed.accounting or 0 }}">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Energia / Água</label>
+            <input type="number" step="0.01" class="form-control" name="utilities" value="{{ fixed.utilities or 0 }}">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Outros (descrição)</label>
+            <input type="text" class="form-control" name="other_description" value="{{ fixed.other_description or '' }}">
+          </div>
+          <div class="col-sm-6">
+            <label class="form-label">Outros (valor)</label>
+            <input type="number" step="0.01" class="form-control" name="other_amount" value="{{ fixed.other_amount or 0 }}">
+          </div>
+        </div>
+        <div class="d-grid mt-3">
+          <button class="btn btn-primary" type="submit">Salvar custos fixos</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="form-section">
+      <h5>Upload de Planilhas</h5>
+      <p class="text-muted small">Suporta arquivos CSV ou Excel (.xlsx). Certifique-se de utilizar os cabeçalhos oficiais.</p>
+      <form method="post" enctype="multipart/form-data" class="mb-3">
+        <input type="hidden" name="form_name" value="upload_containers">
+        <label class="form-label">Latas: Produto | Capacidade | Qtd | Preço Lote (R$) | Preço Unit. (R$) | Frete (R$)</label>
+        <input type="file" class="form-control" name="file" required>
+        <div class="d-grid mt-2">
+          <button class="btn btn-outline-primary" type="submit">Enviar planilha de latas</button>
+        </div>
+      </form>
+      <form method="post" enctype="multipart/form-data" class="mb-3">
+        <input type="hidden" name="form_name" value="upload_essences">
+        <label class="form-label">Essências: Produto | Capacidade (g) | Estoque (un) | Preço Unitário (R$) | Frete (R$)</label>
+        <input type="file" class="form-control" name="file" required>
+        <div class="d-grid mt-2">
+          <button class="btn btn-outline-primary" type="submit">Enviar planilha de essências</button>
+        </div>
+      </form>
+      <form method="post" enctype="multipart/form-data">
+        <input type="hidden" name="form_name" value="upload_waxes">
+        <label class="form-label">Ceras: Produto | Capacidade (g) | Estoque (un) | Preço Unitário (R$) | Frete (R$)</label>
+        <input type="file" class="form-control" name="file" required>
+        <div class="d-grid mt-2">
+          <button class="btn btn-outline-primary" type="submit">Enviar planilha de ceras</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="form-section">
+      <h5>Cadastro Manual de Insumos</h5>
+      <div class="accordion" id="manualAccordion">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne">Nova lata</button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#manualAccordion">
+            <div class="accordion-body">
+              <form method="post">
+                <input type="hidden" name="form_name" value="manual_container">
+                <div class="row g-2">
+                  <div class="col-md-6"><input class="form-control" name="product" placeholder="Produto" required></div>
+                  <div class="col-md-6"><input class="form-control" name="capacity" placeholder="Capacidade"></div>
+                  <div class="col-md-4"><input class="form-control" name="quantity" type="number" placeholder="Qtd" required></div>
+                  <div class="col-md-4"><input class="form-control" name="lot_price" type="number" step="0.01" placeholder="Preço Lote"></div>
+                  <div class="col-md-4"><input class="form-control" name="unit_price" type="number" step="0.0001" placeholder="Preço Unit"></div>
+                  <div class="col-md-4"><input class="form-control" name="freight" type="number" step="0.01" placeholder="Frete"></div>
+                </div>
+                <div class="d-grid mt-3"><button class="btn btn-success" type="submit">Salvar lata</button></div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo">Nova essência</button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#manualAccordion">
+            <div class="accordion-body">
+              <form method="post">
+                <input type="hidden" name="form_name" value="manual_essence">
+                <div class="row g-2">
+                  <div class="col-md-6"><input class="form-control" name="product" placeholder="Produto" required></div>
+                  <div class="col-md-6"><input class="form-control" name="capacity_grams" type="number" step="0.1" placeholder="Capacidade (g)" required></div>
+                  <div class="col-md-6"><input class="form-control" name="stock_units" type="number" placeholder="Estoque (un)" required></div>
+                  <div class="col-md-6"><input class="form-control" name="unit_price" type="number" step="0.01" placeholder="Preço Unitário"></div>
+                  <div class="col-md-6"><input class="form-control" name="freight" type="number" step="0.01" placeholder="Frete"></div>
+                </div>
+                <div class="d-grid mt-3"><button class="btn btn-success" type="submit">Salvar essência</button></div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree">Nova cera</button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#manualAccordion">
+            <div class="accordion-body">
+              <form method="post">
+                <input type="hidden" name="form_name" value="manual_wax">
+                <div class="row g-2">
+                  <div class="col-md-6"><input class="form-control" name="product" placeholder="Produto" required></div>
+                  <div class="col-md-6"><input class="form-control" name="capacity_grams" type="number" step="0.1" placeholder="Capacidade (g)" required></div>
+                  <div class="col-md-6"><input class="form-control" name="stock_units" type="number" placeholder="Estoque (un)" required></div>
+                  <div class="col-md-6"><input class="form-control" name="unit_price" type="number" step="0.01" placeholder="Preço Unitário"></div>
+                  <div class="col-md-6"><input class="form-control" name="freight" type="number" step="0.01" placeholder="Frete"></div>
+                </div>
+                <div class="d-grid mt-3"><button class="btn btn-success" type="submit">Salvar cera</button></div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFour">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour">Novo pavio</button>
+          </h2>
+          <div id="collapseFour" class="accordion-collapse collapse" data-bs-parent="#manualAccordion">
+            <div class="accordion-body">
+              <form method="post">
+                <input type="hidden" name="form_name" value="manual_wick">
+                <div class="row g-2">
+                  <div class="col-md-6"><input class="form-control" name="product" placeholder="Produto" required></div>
+                  <div class="col-md-6"><input class="form-control" name="quantity" type="number" placeholder="Quantidade" required></div>
+                  <div class="col-md-4"><input class="form-control" name="lot_price" type="number" step="0.01" placeholder="Preço Lote"></div>
+                  <div class="col-md-4"><input class="form-control" name="unit_price" type="number" step="0.0001" placeholder="Preço Unit"></div>
+                  <div class="col-md-4"><input class="form-control" name="freight" type="number" step="0.01" placeholder="Frete"></div>
+                </div>
+                <div class="d-grid mt-3"><button class="btn btn-success" type="submit">Salvar pavio</button></div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingFive">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFive">Outros custos variáveis</button>
+          </h2>
+          <div id="collapseFive" class="accordion-collapse collapse" data-bs-parent="#manualAccordion">
+            <div class="accordion-body">
+              <form method="post">
+                <input type="hidden" name="form_name" value="manual_other">
+                <div class="row g-2">
+                  <div class="col-md-8"><input class="form-control" name="name" placeholder="Descrição" required></div>
+                  <div class="col-md-4"><input class="form-control" name="cost_per_unit" type="number" step="0.01" placeholder="R$ / unidade" required></div>
+                </div>
+                <div class="d-grid mt-3"><button class="btn btn-success" type="submit">Salvar custo</button></div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="form-section">
+  <h5>Modelos de Vela e Precificação</h5>
+  <form method="post" class="mb-4">
+    <input type="hidden" name="form_name" value="template">
+    <div class="row g-2">
+      <div class="col-md-4"><input class="form-control" name="name" placeholder="Nome da vela" required></div>
+      <div class="col-md-4"><input class="form-control" name="wax_product" placeholder="Cera" required></div>
+      <div class="col-md-4"><input class="form-control" name="wax_weight_g" type="number" step="0.1" placeholder="Peso da cera (g)" required></div>
+      <div class="col-md-4"><input class="form-control" name="essence_product" placeholder="Essência" required></div>
+      <div class="col-md-4"><input class="form-control" name="fragrance_percentage" type="number" step="0.1" placeholder="% Fragrância" required></div>
+      <div class="col-md-4"><input class="form-control" name="container_product" placeholder="Lata" required></div>
+      <div class="col-md-4"><input class="form-control" name="wick_product" placeholder="Pavio (opcional)"></div>
+      <div class="col-md-4"><input class="form-control" name="other_variable_cost" type="number" step="0.01" placeholder="Outros custos por vela"></div>
+      <div class="col-md-4"><input class="form-control" name="desired_margin" type="number" step="0.01" placeholder="Margem desejada (%)" value="0.3"></div>
+      <div class="col-md-4"><input class="form-control" name="expected_monthly_units" type="number" placeholder="Volume mensal previsto" required></div>
+    </div>
+    <div class="d-grid mt-3"><button class="btn btn-primary" type="submit">Adicionar modelo</button></div>
+  </form>
+
+  <div class="table-responsive">
+    <table class="table table-striped align-middle">
+      <thead>
+        <tr>
+          <th>Vela</th>
+          <th>Custos Variáveis</th>
+          <th>Custo Fixo Rateado</th>
+          <th>Custo Total</th>
+          <th>Preço Sugerido</th>
+          <th>Lucro Unitário</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in template_details %}
+        <tr>
+          <td>
+            <strong>{{ item.template.name }}</strong><br>
+            <small>{{ item.template.wax_weight_g }} g | {{ item.template.fragrance_percentage }}% fragrância</small>
+          </td>
+          <td>
+            <div>Cera: R$ {{ item.financials.breakdown.wax_cost | round(2) }}</div>
+            <div>Essência: R$ {{ item.financials.breakdown.essence_cost | round(2) }}</div>
+            <div>Lata: R$ {{ item.financials.breakdown.container_cost | round(2) }}</div>
+            <div>Pavio: R$ {{ item.financials.breakdown.wick_cost | round(2) }}</div>
+            <div>Outros: R$ {{ item.financials.breakdown.other_cost | round(2) }}</div>
+          </td>
+          <td>R$ {{ item.financials.fixed_per_unit | round(2) }}</td>
+          <td>R$ {{ item.financials.total_unit_cost | round(2) }}</td>
+          <td>R$ {{ item.financials.price_suggested | round(2) }}</td>
+          <td>R$ {{ item.financials.unit_profit | round(2) }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="text-muted text-center">Cadastre um modelo para calcular a precificação.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard | Gestão de Velas{% endblock %}
+{% block content %}
+<h1 class="mb-4">Dashboard Estratégico</h1>
+<div class="row g-3 mb-4">
+  <div class="col-md-3">
+    <div class="form-section h-100">
+      <h6 class="text-uppercase text-muted">Custo Médio Unitário</h6>
+      <p class="display-6">R$ {{ metrics.average_unit_cost | round(2) }}</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-section h-100">
+      <h6 class="text-uppercase text-muted">Estoque de Insumos</h6>
+      <p class="display-6">{{ inventory.waxes|length + inventory.essences|length + inventory.containers|length + inventory.wicks|length }}</p>
+      <small class="text-muted">Lotes cadastrados</small>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-section h-100">
+      <h6 class="text-uppercase text-muted">Receita em Potencial</h6>
+      <p class="display-6">R$ {{ metrics.potential_revenue | round(2) }}</p>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-section h-100">
+      <h6 class="text-uppercase text-muted">Ponto de Equilíbrio</h6>
+      {% if metrics.break_even %}
+      <p class="display-6">{{ metrics.break_even | round(0) }} velas</p>
+      {% else %}
+      <p class="display-6 text-muted">-</p>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="form-section mb-4">
+  <h5>DRE Anualizada (Estimativa)</h5>
+  {% if metrics.annual_dre %}
+  <div class="row">
+    <div class="col-md-3">
+      <div class="text-muted">Receita</div>
+      <div class="h4">R$ {{ metrics.annual_dre.revenue | round(2) }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-muted">CMV</div>
+      <div class="h4">R$ {{ metrics.annual_dre.cmv | round(2) }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-muted">Custos Fixos</div>
+      <div class="h4">R$ {{ metrics.annual_dre.fixed | round(2) }}</div>
+    </div>
+    <div class="col-md-3">
+      <div class="text-muted">Resultado</div>
+      <div class="h4 {% if metrics.annual_dre.result < 0 %}text-danger{% else %}text-success{% endif %}">R$ {{ metrics.annual_dre.result | round(2) }}</div>
+    </div>
+  </div>
+  {% else %}
+  <p class="text-muted">Cadastre um template de vela para visualizar a DRE projetada.</p>
+  {% endif %}
+</div>
+
+<div class="form-section">
+  <h5>Estoque Resumido</h5>
+  <div class="row">
+    <div class="col-md-3">
+      <h6>Latas</h6>
+      <ul class="list-unstyled">
+        {% for item in inventory.containers %}
+        <li>{{ item.product }}: {{ item.available_units }} un</li>
+        {% else %}
+        <li class="text-muted">Sem dados</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-md-3">
+      <h6>Essências</h6>
+      <ul class="list-unstyled">
+        {% for item in inventory.essences %}
+        <li>{{ item.product }}: {{ item.available_grams | round(1) }} g</li>
+        {% else %}
+        <li class="text-muted">Sem dados</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-md-3">
+      <h6>Ceras</h6>
+      <ul class="list-unstyled">
+        {% for item in inventory.waxes %}
+        <li>{{ item.product }}: {{ item.available_grams | round(1) }} g</li>
+        {% else %}
+        <li class="text-muted">Sem dados</li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="col-md-3">
+      <h6>Pavios</h6>
+      <ul class="list-unstyled">
+        {% for item in inventory.wicks %}
+        <li>{{ item.product }}: {{ item.available_units }} un</li>
+        {% else %}
+        <li class="text-muted">Sem dados</li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+{% endblock %}
