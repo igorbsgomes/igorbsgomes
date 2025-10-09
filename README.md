@@ -44,3 +44,17 @@ Aplicação web completa (Flask + SQLite) para controle financeiro, produtivo e 
 - Os dados são compartilhados entre os sócios autenticados.
 
 A aplicação foi desenvolvida para servir como base sólida e extensível para a gestão do negócio artesanal de velas aromáticas.
+
+## Como testar
+
+Com as dependências instaladas e o ambiente virtual ativo, você pode verificar rapidamente se o projeto está saudável executando a compilação dos módulos Python e iniciando o servidor de desenvolvimento:
+
+```bash
+# checa se há erros de sintaxe
+python -m compileall .
+
+# roda a suíte de integração manual (servidor Flask)
+flask --app app run
+```
+
+Depois de o servidor estar em execução (`http://localhost:5000`), autentique-se com `admin/admin` e navegue pelas sessões do sistema (Dashboard, Precificação, Estoque, Produção e Orçamento) para validar os fluxos principais. Recomenda-se cadastrar alguns custos fixos, importar ou registrar insumos manualmente, gerar um modelo de vela e lançar uma ordem de produção para observar a atualização automática dos estoques e dos indicadores financeiros.
