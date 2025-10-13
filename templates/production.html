@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Produção | Gestão de Velas{% endblock %}
+{% block content %}
+<h1 class="mb-4">Sessão 3: Produção</h1>
+<div class="form-section">
+  <h5>Registrar nova produção</h5>
+  <form method="post">
+    <div class="row g-2">
+      <div class="col-md-4">
+        <label class="form-label">Modelo de vela</label>
+        <select class="form-select" name="template_id" required>
+          <option value="">Selecione...</option>
+          {% for template in templates %}
+          <option value="{{ template.id }}">{{ template.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Quantidade</label>
+        <input type="number" name="quantity" class="form-control" min="1" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Preço de venda (opcional)</label>
+        <input type="number" step="0.01" name="selling_price" class="form-control" placeholder="Deixe vazio para usar o sugerido">
+      </div>
+    </div>
+    <div class="d-grid mt-3">
+      <button class="btn btn-primary" type="submit">Produzir</button>
+    </div>
+  </form>
+</div>
+
+<div class="form-section">
+  <h5>Como funciona</h5>
+  <ul>
+    <li>Selecione um modelo configurado na sessão de precificação.</li>
+    <li>Informe a quantidade desejada. O sistema abate automaticamente os insumos.</li>
+    <li>Se desejar, informe um preço de venda diferente do sugerido para esta produção.</li>
+    <li>O estoque de velas prontas é atualizado automaticamente.</li>
+  </ul>
+</div>
+{% endblock %}

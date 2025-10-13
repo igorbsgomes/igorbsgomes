@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Login | Gestão de Velas{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-4">
+    <div class="form-section">
+      <h2 class="mb-4 text-center">Acesso dos Sócios</h2>
+      <form method="post">
+        <div class="mb-3">
+          <label for="username" class="form-label">Usuário</label>
+          <input type="text" class="form-control" id="username" name="username" required>
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Senha</label>
+          <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <div class="d-grid">
+          <button type="submit" class="btn btn-primary">Entrar</button>
+        </div>
+      </form>
+      <p class="text-muted small mt-3">Usuário padrão: <strong>admin</strong> / Senha: <strong>admin</strong></p>
+    </div>
+  </div>
+</div>
+{% endblock %}

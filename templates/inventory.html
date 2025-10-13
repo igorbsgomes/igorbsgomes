@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+{% block title %}Estoque | Gestão de Velas{% endblock %}
+{% block content %}
+<h1 class="mb-4">Sessão 2: Estoque</h1>
+<div class="row g-3">
+  <div class="col-lg-6">
+    <div class="form-section">
+      <h5>Estoque de Insumos</h5>
+      <div class="row">
+        <div class="col-sm-6">
+          <h6>Latas</h6>
+          <ul class="list-unstyled">
+            {% for item in inventory.containers %}
+            <li>{{ item.product }} - {{ item.available_units }} unidades</li>
+            {% else %}
+            <li class="text-muted">Sem cadastros</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-sm-6">
+          <h6>Pavios</h6>
+          <ul class="list-unstyled">
+            {% for item in inventory.wicks %}
+            <li>{{ item.product }} - {{ item.available_units }} unidades</li>
+            {% else %}
+            <li class="text-muted">Sem cadastros</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-6">
+          <h6>Essências</h6>
+          <ul class="list-unstyled">
+            {% for item in inventory.essences %}
+            <li>{{ item.product }} - {{ item.available_grams | round(1) }} g</li>
+            {% else %}
+            <li class="text-muted">Sem cadastros</li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="col-sm-6">
+          <h6>Ceras</h6>
+          <ul class="list-unstyled">
+            {% for item in inventory.waxes %}
+            <li>{{ item.product }} - {{ item.available_grams | round(1) }} g</li>
+            {% else %}
+            <li class="text-muted">Sem cadastros</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="form-section">
+      <h5>Capacidade Produtiva</h5>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Vela</th>
+              <th>Limite por insumo</th>
+              <th>Receita em Potencial</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in template_data %}
+            <tr>
+              <td>{{ item.template.name }}</td>
+              <td>{{ item.possible }}</td>
+              <td>R$ {{ (item.possible * item.financials.price_suggested) | round(2) }}</td>
+            </tr>
+            {% else %}
+            <tr><td colspan="3" class="text-muted text-center">Cadastre um modelo para estimar a capacidade.</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
