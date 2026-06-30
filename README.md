@@ -1,6 +1,6 @@
 # Hi, I'm Igor 👋
 
-### FP&A × Data Specialist — I build the pipelines and predictive models that turn financial planning from retrospective reporting into forward-looking decision support.
+### FP&A × Analytics Engineer — I build the pipelines and predictive models that turn financial planning from retrospective reporting into forward-looking decision support.
 
 I'm a finance professional who codes. With nearly 9 years across FP&A, BI, and data engineering, I currently lead the financial planning cycle for the Technology Division of one of Brazil's largest media companies — where I've been replacing manual analysis and Power BI bottlenecks with automated Medallion-architecture pipelines and machine-learning forecasts.
 
